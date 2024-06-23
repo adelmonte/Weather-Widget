@@ -1,5 +1,7 @@
-Create new panel.
-Use xprop to find window ID property.
+![screenshot](./widget_screen.png)
+
+Create new panel.\
+Use xprop to find window ID property.\
 Edit/Apply wmctrl start_weather script to keep behind windows.
 
 Exclude main panel round corners in picom.conf:\
