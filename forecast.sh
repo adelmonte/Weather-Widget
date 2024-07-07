@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CITY="Spokane"
-API_KEY="************************************"
+API_KEY="433a4d1ac86863ecd165a890ece92fbc"
 API_URL="http://api.openweathermap.org/data/2.5/forecast?q=${CITY}&cnt=24&appid=${API_KEY}&units=imperial"
 sleep 2
 
@@ -47,11 +47,15 @@ get_weather() {
     local day1_icon=$(get_weather_icon "$day1_cond")
     local day2_icon=$(get_weather_icon "$day2_cond")
     local day3_icon=$(get_weather_icon "$day3_cond")
+
+    local date1=$(date +"%a %b %d")
+    local date2=$(date -d "1 day" +"%a %b %d")
+    local date3=$(date -d "2 days" +"%a %b %d")
     
-    print_centered_row "Today" "Tomorrow" " Following"
+    print_centered_row "$date1" "$date2" "$date3"
     print_centered_row "$day1_icon" "$day2_icon" "$day3_icon"
     print_centered_row "${day1_temp}°F" "${day2_temp}°F" " ${day3_temp}°F"
-    print_centered_row "$day1_cond" "$day2_cond" " $day3_cond"
+    print_centered_row "$day1_cond" "$day2_cond" "$day3_cond"
 }
 
 get_weather
