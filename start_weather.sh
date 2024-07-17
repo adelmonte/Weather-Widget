@@ -1,7 +1,12 @@
 #!/bin/bash
 
-# Find the top panel's window ID based on the _NET_WM_STRUT_PARTIAL property
-TOP_PANEL_WINDOW_ID=$(xprop -root | awk '/_NET_WM_STRUT_PARTIAL/ {print $5}' | head -n 1)
+# Find the window ID by name and size, 
+# CHANGE DIMENTIONS ACCORDINGLY!!
+WINDOW_ID=$(xdotool search --name "xfce4-panel" | while read id; do
+    if xdotool getwindowgeometry $id | grep -q "924x208"; then
+        echo $id
+        break
+    fi
+done)
 
-# Apply the effect using wmctrl
-wmctrl -i -r $TOP_PANEL_WINDOW_ID -b add,below
+xdotool windowstate --add below $WINDOW_ID
