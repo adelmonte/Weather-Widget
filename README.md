@@ -3,7 +3,6 @@
 Now shows actual dates.
 
 Create new panel.\
-Use xprop to find window ID property.\
 Edit/Apply start_weather script to keep behind windows.
 
 Exclude main panel round corners in picom.conf:\
