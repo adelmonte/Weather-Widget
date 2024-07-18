@@ -2,7 +2,7 @@
 
 CITY="Spokane"
 API_KEY=""
-API_URL="http://api.openweathermap.org/data/2.5/forecast?q=${CITY}&cnt=24&appid=${API_KEY}&units=imperial"
+API_URL="http://api.openweathermap.org/data/2.5/forecast?q=${CITY}&appid=${API_KEY}&units=imperial"
 sleep 2
 
 get_weather_icon() {
@@ -37,12 +37,12 @@ print_centered_row() {
 
 get_weather() {
     local response=$(curl -s $API_URL)
-    local day1_temp=$(echo $response | jq -r '.list[0].main.temp_max' | awk '{print int($1+0.5)}')
-    local day1_cond=$(echo $response | jq -r '.list[0].weather[0].main')
-    local day2_temp=$(echo $response | jq -r '.list[8].main.temp_max' | awk '{print int($1+0.5)}')
-    local day2_cond=$(echo $response | jq -r '.list[8].weather[0].main')
-    local day3_temp=$(echo $response | jq -r '.list[16].main.temp_max' | awk '{print int($1+0.5)}')
-    local day3_cond=$(echo $response | jq -r '.list[16].weather[0].main')
+    local day1_temp=$(echo $response | jq -r '[.list[0:8] | .[].main.temp_max] | max' | awk '{print int($1+0.5)}')
+    local day1_cond=$(echo $response | jq -r '.list[4].weather[0].main')
+    local day2_temp=$(echo $response | jq -r '[.list[8:16] | .[].main.temp_max] | max' | awk '{print int($1+0.5)}')
+    local day2_cond=$(echo $response | jq -r '.list[12].weather[0].main')
+    local day3_temp=$(echo $response | jq -r '[.list[16:24] | .[].main.temp_max] | max' | awk '{print int($1+0.5)}')
+    local day3_cond=$(echo $response | jq -r '.list[20].weather[0].main')
     
     local day1_icon=$(get_weather_icon "$day1_cond")
     local day2_icon=$(get_weather_icon "$day2_cond")
