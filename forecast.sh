@@ -1,10 +1,8 @@
 #!/bin/bash
-
 CITY="Spokane"
 API_KEY=""
 API_URL="http://api.openweathermap.org/data/2.5/forecast?q=${CITY}&appid=${API_KEY}&units=imperial"
 sleep 2
-
 get_weather_icon() {
     case $1 in
         Clear) echo "☀️";;
@@ -17,24 +15,18 @@ get_weather_icon() {
         *) echo "❓";;
     esac
 }
-
 center_text() {
     local text="$1"
     local width="$2"
-    local textwidth=${#text}
-    local padding=$(( (width - textwidth) / 2 ))
-    local extra=$(( (width - textwidth) % 2 ))
-    printf "%*s%s%*s" $padding "" "$text" $(( padding + extra )) ""
+    printf "%*s%s%*s" $(( (width - ${#text}) / 2 )) "" "$text" $(( (width - ${#text} + 1) / 2 )) ""
 }
-
 print_centered_row() {
     local col1="$1"
     local col2="$2"
     local col3="$3"
-    local width=15
+    local width=16
     printf "%s%s%s\n" "$(center_text "$col1" $width)" "$(center_text "$col2" $width)" "$(center_text "$col3" $width)"
 }
-
 get_weather() {
     local response=$(curl -s $API_URL)
     local day1_temp=$(echo $response | jq -r '[.list[0:8] | .[].main.temp_max] | max' | awk '{print int($1+0.5)}')
@@ -47,15 +39,13 @@ get_weather() {
     local day1_icon=$(get_weather_icon "$day1_cond")
     local day2_icon=$(get_weather_icon "$day2_cond")
     local day3_icon=$(get_weather_icon "$day3_cond")
-
     local date1=$(date +"%a %b %d")
     local date2=$(date -d "1 day" +"%a %b %d")
     local date3=$(date -d "2 days" +"%a %b %d")
     
     print_centered_row "$date1" "$date2" "$date3"
     print_centered_row "$day1_icon" "$day2_icon" "$day3_icon"
-    print_centered_row "${day1_temp}°F" "${day2_temp}°F" " ${day3_temp}°F"
+    print_centered_row "${day1_temp}°F" "${day2_temp}°F" "${day3_temp}°F"
     print_centered_row "$day1_cond" "$day2_cond" "$day3_cond"
 }
-
 get_weather
