@@ -1,8 +1,8 @@
 #!/bin/bash
 CITY="New+York"
-API_KEY=" "
+API_KEY=""
 API_URL="http://api.openweathermap.org/data/2.5/forecast?q=${CITY}&appid=${API_KEY}&units=imperial"
-sleep 2
+
 get_weather_icon() {
     case $1 in
         Clear) echo "☀️";;
@@ -81,3 +81,12 @@ ${date3}: ${day3_icon}
 Condition: ${day3_cond}</tool>"
 }
 get_weather
+
+
+#Self Hide Widget
+# Get the panel with smaller width
+PANEL_ID=$(wmctrl -l -G | grep "xfce4-panel" | awk '{print $1, $4}' | sort -k2n | head -1 | cut -d' ' -f1)
+
+if [ -n "$PANEL_ID" ]; then
+    wmctrl -i -r "$PANEL_ID" -b add,below
+fi
